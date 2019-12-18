@@ -54,14 +54,6 @@ stages:
       runOnce:
         deploy:
           steps:
-            # - task: DownloadBuildArtifacts@0
-            #   displayName: Download build artifacts
-            #   inputs:
-            #     buildType: 'current'
-            #     downloadType: 'single'
-            #     artifactName: '$(artifactName)'
-            #     downloadPath: '$(System.ArtifactsDirectory)'
-
             - task: AzureResourceManagerTemplateDeployment@3
               displayName: Create a resource group
               inputs:
