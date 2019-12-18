@@ -5,9 +5,6 @@
         "applicationPrefix": {
             "value": "test"
         },
-        "environment": {
-            "value": "test"
-        },
         "functionAppRuntimeStack": {
             "value": "dotnet"
         },
