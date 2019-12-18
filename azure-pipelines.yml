@@ -16,32 +16,33 @@ variables:
 
 stages:
 
-# - stage: Publish
-#   displayName: Publish
+- stage: Publish
+  displayName: Publish
 
-#   jobs:
-#     - job: PublishdJob
-#       displayName: Copy and Publish Artifacts
-#       pool:
-#         vmImage: 'windows-latest'
+  jobs:
+    - job: PublishdJob
+      displayName: Copy and Publish Artifacts
+      pool:
+        vmImage: 'windows-latest'
 
-#       steps:
-#         - task: CopyFiles@2
-#           displayName: Copy files
-#           inputs:
-#             SourceFolder: '$(Build.SourcesDirectory)'
-#             Contents: '**'
-#             TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      steps:
+        - task: CopyFiles@2
+          displayName: Copy files
+          inputs:
+            SourceFolder: '$(Build.SourcesDirectory)'
+            Contents: '**'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-#         - task: PublishBuildArtifacts@1
-#           displayName:  Publish build artifacts
-#           inputs:
-#             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-#             ArtifactName: '$(artifactName)'
+        - task: PublishBuildArtifacts@1
+          displayName:  Publish build artifacts
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: '$(artifactName)'
 
     
 - stage: DeployToTestEnvironment
   displayName: Deploy to test
+  dependsOn: Publish
 
   jobs:
   - deployment: DeploymentJob
