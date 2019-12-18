@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspaceName": {
+            "type": "String",
+            "metadata": {
+                "description": "Specifies the name of the workspace.",
+                "name": "Workspace name"
+            }
+        },
+        "sku": {
+           "type": "string",
+           "metadata": {
+                "description": "Pricing tier for Log Analytics workspace.",
+                "name": "Pricing tier"
+            },
+            "allowedValues":[
+                "Free",
+                "PerGB2018",
+                "PerNode",
+                "Premium",
+                "Standalone",
+                "Standard"
+            ],
+            "defaultValue": "Free"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "name": "[parameters('workspaceName')]",
+            "apiVersion": "2015-11-01-preview",
+            "location": "[resourceGroup().location]",
+            "comments": "Log Analytics workspace",
+            "properties": {
+                "sku": {
+                    "name": "[parameters('sku')]"
+                }
+            }
+        }
+    ]
+}
