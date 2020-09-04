@@ -44,6 +44,10 @@ stages:
   displayName: Deploy to test
   dependsOn: Publish
 
+  variables:
+    subscriptionName: 'Personal'
+    subscriptionId: 'e1cef2f7-14c7-487d-be6f-71b29ac4b042'
+
   jobs:
   - deployment: DeploymentJob
     displayName: Deploy ARM templates
@@ -58,8 +62,8 @@ stages:
               displayName: Create a resource group
               inputs:
                 deploymentScope: 'Subscription'
-                ConnectedServiceName: $(subscriptionName)
-                subscriptionName: $(subscriptionId)
+                ConnectedServiceName: ${{ variables.subscriptionName }}
+                subscriptionName: ${{ variables.subscriptionId }}
                 location: $(location)
                 templateLocation: 'Linked artifact'
                 csmFile: '$(Agent.BuildDirectory)\$(artifactName)\resource-group\azuredeploy.json'
@@ -70,7 +74,7 @@ stages:
             - task: AzurePowerShell@4
               displayName: Get the resource group name
               inputs:
-                azureSubscription: $(subscriptionName)
+                azureSubscription: ${{ variables.subscriptionName }}
                 scriptType: 'InlineScript'
                 Inline: |
                   $var=ConvertFrom-Json '$(armOutputs)'
@@ -83,8 +87,8 @@ stages:
               displayName: Create a storage account for deployment artifacts
               inputs:
                 deploymentScope: 'Resource Group'
-                ConnectedServiceName: $(subscriptionName)
-                subscriptionName: $(subscriptionId)
+                ConnectedServiceName: ${{ variables.subscriptionName }}
+                subscriptionName: ${{ variables.subscriptionId }}
                 action: 'Create Or Update Resource Group'
                 resourceGroupName: '$(resourceGroupName)'
                 location: $(location)
@@ -97,7 +101,7 @@ stages:
             - task: AzurePowerShell@4
               displayName: Get the storage account and its container names
               inputs:
-                azureSubscription: $(subscriptionName)
+                azureSubscription: ${{ variables.subscriptionName }}
                 scriptType: 'InlineScript'
                 Inline: |
                   $var=ConvertFrom-Json '$(armOutputs)'
@@ -112,7 +116,7 @@ stages:
               displayName: Copy deployment artifacts to the storage account
               inputs:
                 sourcePath: '$(Agent.BuildDirectory)\$(artifactName)\linked-templates'
-                azureSubscription: $(subscriptionName)
+                azureSubscription: ${{ variables.subscriptionName }}
                 destination: azureBlob
                 storage: $(storageAccountName)
                 containerName: $(storageContainerName)
@@ -126,8 +130,8 @@ stages:
               displayName: Deploy resources to the resource group
               inputs:
                 deploymentScope: 'Resource Group'
-                ConnectedServiceName: $(subscriptionName)
-                subscriptionName: $(subscriptionId)
+                ConnectedServiceName: ${{ variables.subscriptionName }}
+                subscriptionName: ${{ variables.subscriptionId }}
                 action: 'Create Or Update Resource Group'
                 resourceGroupName: '$(resourceGroupName)'
                 location: $(location)
