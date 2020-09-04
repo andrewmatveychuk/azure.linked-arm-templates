@@ -14,8 +14,8 @@ variables:
   # Artifact name
   artifactName: 'azure.linked-arm-templates'
   # Subscrption to deploy
-  subscriptionName: 'Personal'
-  subscriptionId: 'e1cef2f7-14c7-487d-be6f-71b29ac4b042'
+  # subscriptionName: 'Personal'
+  # subscriptionId: 'e1cef2f7-14c7-487d-be6f-71b29ac4b042'
 
 stages:
 
